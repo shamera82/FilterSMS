@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0E7198</color>
+    <color name="colorPrimaryDark">#024560</color>
+    <color name="colorAccent">#117EB8</color>
+    <color name="colorBtnSiren">#6D0E2D</color>
+    <color name="colorMobileNo">#01203A</color>
+    <color name="colorMessage">#032742</color>
+</resources>

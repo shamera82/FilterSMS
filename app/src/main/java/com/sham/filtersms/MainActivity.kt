@@ -12,6 +12,8 @@ import android.os.Bundle
 import android.provider.Telephony
 import android.telephony.SmsManager
 import android.telephony.SmsMessage
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.sham.filtersms.fragments.HomeFragment
@@ -40,7 +42,6 @@ class MainActivity : AppCompatActivity() {
             setUpTabs()
         }
         else {
-
             mediaPlayer?.setOnPreparedListener {
                 println("Shamera: ready to go")
                 setUpTabs()

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,13 +11,116 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/textViewSmsHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="16dp"
+            android:text="SMS Settings"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/labelFilterKeyword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Settings"
+            android:layout_below="@+id/textViewSmsHeader"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="208dp"
+            android:text="Filter Keyword"
             android:textColor="@android:color/black"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
+        <EditText
+            android:id="@+id/editTextFilterKeyword"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewSmsHeader"
+            android:layout_marginStart="-203dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/labelFilterKeyword"
+            android:inputType="text"
+            android:textAllCaps="true"
+            android:hint="Filter Keyword"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/labelReplyKeyword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/labelFilterKeyword"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="208dp"
+            android:text="Reply Message"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/editTextFilterReply"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextFilterKeyword"
+            android:layout_marginStart="-203dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/labelFilterKeyword"
+            android:inputType="text"
+            android:textAllCaps="true"
+            android:hint="Filter Keyword"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/textViewSi"
+            android:layout_width="168dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="20dp"
+            android:text="SMS Settings"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <View
+            android:id="@+id/lineShort"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/editTextFilterReply"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="64dp"
+            android:background="@color/colorshortLine" />
+
+        <TextView
+            android:id="@+id/textViewSiranHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:text="Siran Tunes"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:layout_below="@+id/lineShort" />
+
+        <Button
+            android:id="@+id/buttonApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Apply"
+            android:background="@color/colorBtnApply"/>
     </RelativeLayout>
 
 

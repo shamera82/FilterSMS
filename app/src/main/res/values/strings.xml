@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Filter SMS</string>
+    <string name="MobileNum_hint">Receiver Mobile shown here</string>
+    <string name="Message_hint">Filtered Message shown here</string>
+    <string name="Ack_btn">Acknowledge \n and Stop Siren</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

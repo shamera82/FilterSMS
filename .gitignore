@@ -12,3 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
+/app/google-services.json
+/app/build/
+/app/build.gradle
+/build.gradle

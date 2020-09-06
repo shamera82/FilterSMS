@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.HomeFragment">
+    tools:context=".fragments.SettingFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -46,10 +46,10 @@
             android:layout_marginStart="-203dp"
             android:layout_marginTop="16dp"
             android:layout_toEndOf="@+id/labelFilterKeyword"
+            android:hint="Filter Keyword"
             android:inputType="text"
             android:textAllCaps="true"
-            android:hint="Filter Keyword"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/labelReplyKeyword"
@@ -73,10 +73,10 @@
             android:layout_marginStart="-203dp"
             android:layout_marginTop="16dp"
             android:layout_toEndOf="@+id/labelFilterKeyword"
+            android:hint="Filter Keyword"
             android:inputType="text"
             android:textAllCaps="true"
-            android:hint="Filter Keyword"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textViewSi"
@@ -115,12 +115,24 @@
             android:layout_below="@+id/lineShort" />
 
         <Button
-            android:id="@+id/buttonApply"
+            android:id="@+id/btnApply"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:text="Apply"
             android:background="@color/colorBtnApply"/>
+
+        <ListView
+            android:id="@+id/ListViewSiran"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_above="@+id/btnApply"
+            android:layout_below="@+id/textViewSiranHeader"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"/>
+
     </RelativeLayout>
 
 

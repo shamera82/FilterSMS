@@ -3,9 +3,11 @@ package com.sham.filtersms
 class FilterSMS {
     var filterKeyword = ""
     var replySMS = ""
-    constructor(filterKeyword: String, replySMS: String){
+    var sirenName=""
+    constructor(filterKeyword: String, replySMS: String, sirenName: String){
         this.filterKeyword = filterKeyword
         this.replySMS = replySMS
+        this.sirenName = sirenName
     }
 }
 

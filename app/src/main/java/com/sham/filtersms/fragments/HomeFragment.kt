@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
         val ref = FirebaseDatabase.getInstance().reference
         var getfilterkey = ""
         var getrepsms = ""
-        var sirantune = ""
+        var sirentune = ""
 
         // retrieve data from db
         var getdatafilersms = object : ValueEventListener {
@@ -65,9 +65,9 @@ class HomeFragment : Fragment() {
                         getfilterkey = i.child("filterKeyword").getValue().toString()
                         getrepsms = i.child("replySMS").getValue().toString()
                     }
-                    if("${i.key}" == "siran_setting") {
+                    if("${i.key}" == "siren_setting") {
                         println("Shamera Main DB get i " + i)
-                        sirantune = i.child("siranName").getValue().toString()
+                        sirentune = i.child("sirenName").getValue().toString()
                     }
                 }
             }
@@ -86,16 +86,17 @@ class HomeFragment : Fragment() {
                             editTextMobile.setText(sms.displayOriginatingAddress)
                             editTextText.setText(sms.displayMessageBody)
 
-                            // read selected siran tune from variable and play when required.
-                            println("Shamera: playing tune $sirantune")
-                            mediaPlayer = MediaPlayer.create(context, resources.getIdentifier(sirantune,"raw", context?.packageName))
+                            // read selected siren tune from variable and play when required.
+                            println("Shamera: playing tune $sirentune")
+
+                            mediaPlayer = MediaPlayer.create(context, resources.getIdentifier(sirentune,"raw", context?.packageName))
                             mediaPlayer?.setLooping(true)
                             mediaPlayer?.start()
                             println("Shamera: playing")
 
-                            // to stop the ringtune
+                            // to stop the ringtone
                             btnStop.setOnClickListener {
-                                mediaPlayer?.pause() // pause media player instead of stop.
+                                mediaPlayer?.stop() // pause media player instead of stop.
                                 println("Shamera: click pause")
 
                                 // auto reply to message

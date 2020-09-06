@@ -3,8 +3,8 @@
     <color name="colorPrimary">#0E7198</color>
     <color name="colorPrimaryDark">#024560</color>
     <color name="colorAccent">#117EB8</color>
-    <color name="colorBtnApply">#047C30</color>
+    <color name="colorBtnApply">#2E4E31</color>
     <color name="colorMobileNo">#01203A</color>
     <color name="colorMessage">#032742</color>
-    <color name="colorshortLine">#02293E</color>
+    <color name="colorshortLine">#566E7A</color>
 </resources>

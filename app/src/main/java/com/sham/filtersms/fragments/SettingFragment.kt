@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
 
-    val siran_tune_select = "" // need to get item from "override fun onItemClick()"
+    val siran_tune_select = "alarm_warning_siren" // need to get item from "override fun onItemClick()"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
         var arrayAdapter:ArrayAdapter<String>? = null
 
         listView = v.ListViewSiran
-        arrayAdapter = ArrayAdapter(v.context, android.R.layout.simple_list_item_multiple_choice,resources.getStringArray(R.array.siran_tunes_list))
+        arrayAdapter = ArrayAdapter(v.context, android.R.layout.simple_list_item_multiple_choice,resources.getStringArray(R.array.siren_tunes_list))
         listView?.adapter = arrayAdapter
         listView?.choiceMode = ListView.CHOICE_MODE_SINGLE
         listView?.onItemClickListener = this
@@ -59,11 +59,16 @@ class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
             override fun onDataChange(p0: DataSnapshot) {
                 var filterkey = ""
                 var repsms = ""
+                var sirentune = ""
                 for(i in p0.children){
                     if("${i.key}" == "sms_setting") {
                         println("Shamera DB get i " + i)
                         filterkey = i.child("filterKeyword").getValue().toString()
                         repsms = i.child("replySMS").getValue().toString()
+                    }
+                    if("${i.key}" == "siren_setting") {
+                        println("Shamera Main DB get i " + i)
+                        sirentune = i.child("sirenName").getValue().toString()
                     }
                 }
                 v.editTextFilterKeyword.setText(filterkey)
@@ -94,9 +99,9 @@ class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
             }
 
 
-            val myData = FilterSMS(filterKeyword,replySMS)
+            val myData = FilterSMS(filterKeyword,replySMS,siran_tune_select)
             ref.child("sms_setting").setValue(myData).addOnCompleteListener {
-                Toast.makeText(context, "added", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Add / Update center db", Toast.LENGTH_SHORT).show()
             }
 
 

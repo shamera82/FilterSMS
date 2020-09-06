@@ -36,7 +36,7 @@
             android:layout_marginEnd="208dp"
             android:text="Filter Keyword"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/editTextFilterKeyword"
@@ -46,10 +46,10 @@
             android:layout_marginStart="-203dp"
             android:layout_marginTop="16dp"
             android:layout_toEndOf="@+id/labelFilterKeyword"
-            android:hint="Filter Keyword"
+            android:hint="@string/SMSFliter_hint"
             android:inputType="text"
             android:textAllCaps="true"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/labelReplyKeyword"
@@ -63,7 +63,7 @@
             android:layout_marginEnd="208dp"
             android:text="Reply Message"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/editTextFilterReply"
@@ -73,10 +73,10 @@
             android:layout_marginStart="-203dp"
             android:layout_marginTop="16dp"
             android:layout_toEndOf="@+id/labelFilterKeyword"
-            android:hint="Filter Keyword"
+            android:hint="@string/SMSReply_hint"
             android:inputType="text"
             android:textAllCaps="true"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textViewSi"
@@ -98,7 +98,7 @@
             android:layout_height="2dp"
             android:layout_below="@+id/editTextFilterReply"
             android:layout_marginStart="64dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="64dp"
             android:background="@color/colorshortLine" />
 
@@ -107,20 +107,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:text="Siran Tunes"
+            android:text="Siren Tunes"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:layout_below="@+id/lineShort" />
-
-        <Button
-            android:id="@+id/btnApply"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:text="Apply"
-            android:background="@color/colorBtnApply"/>
 
         <ListView
             android:id="@+id/ListViewSiran"
@@ -132,6 +124,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btnApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Apply"
+            android:textColor="@android:color/white"
+            android:background="@color/colorBtnApply"/>
 
     </RelativeLayout>
 

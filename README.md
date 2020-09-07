@@ -7,10 +7,12 @@ This is simple SMS read application. Only different is it's filter the SMS using
 
 ## Screen captures
 * Main Screen
-![alt text](https://github.com/shamera82/FilterSMS/blob/master/screenshots/main_screen.png?raw=true)
+
+![Main Screen](https://github.com/shamera82/FilterSMS/blob/master/screenshots/main_screen.png?raw=true)
 
 * Setting Screen
-![alt text](https://github.com/shamera82/FilterSMS/blob/master/screenshots/setting_screen.png?raw=true)
+
+![Setting Screen](https://github.com/shamera82/FilterSMS/blob/master/screenshots/setting_screen.png?raw=true)
 
 ## Pending Tasks
 *	currently DB has one record support. Need to modify as primary key based on receiver mobile number to filter

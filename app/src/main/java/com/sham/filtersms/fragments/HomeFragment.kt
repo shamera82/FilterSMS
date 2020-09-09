@@ -94,8 +94,8 @@ class HomeFragment : Fragment() {
                             mediaPlayer?.start()
                             println("Shamera: playing")
 
-                            if(!btnStop.isEnabled){
-                                btnStop.isEnabled = true
+                            if(!btnStop.isClickable){
+                                btnStop.isClickable = true
                             }
                             // to stop the ringtone
                             btnStop.setOnClickListener {
@@ -107,7 +107,7 @@ class HomeFragment : Fragment() {
                                 var sms = SmsManager.getDefault()
                                 sms.sendTextMessage(editTextMobile.text.toString(),"Shamera",replyText,null,null)
 
-                                btnStop.isEnabled = false
+                                btnStop.isClickable = false
 
                                 toastMsg("Acknowledge and Send Reply $getrepsms")
                             }

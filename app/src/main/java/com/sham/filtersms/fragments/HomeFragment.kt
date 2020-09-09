@@ -94,6 +94,9 @@ class HomeFragment : Fragment() {
                             mediaPlayer?.start()
                             println("Shamera: playing")
 
+                            if(!btnStop.isEnabled){
+                                btnStop.isEnabled = true
+                            }
                             // to stop the ringtone
                             btnStop.setOnClickListener {
                                 mediaPlayer?.stop() // pause media player instead of stop.
@@ -103,6 +106,8 @@ class HomeFragment : Fragment() {
                                 val replyText = getrepsms
                                 var sms = SmsManager.getDefault()
                                 sms.sendTextMessage(editTextMobile.text.toString(),"Shamera",replyText,null,null)
+
+                                btnStop.isEnabled = false
 
                                 toastMsg("Acknowledge and Send Reply $getrepsms")
                             }

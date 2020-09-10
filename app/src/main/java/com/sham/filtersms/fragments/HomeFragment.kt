@@ -1,23 +1,21 @@
 package com.sham.filtersms.fragments
 
-import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.provider.Telephony
 import android.telephony.SmsManager
 import android.telephony.SmsMessage
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -29,23 +27,20 @@ class HomeFragment : Fragment() {
 
     var mediaPlayer: MediaPlayer? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_home, container, false)
+        Log.d("Shamera-HomeFragment", "On Home Fragment")
         receiveMsg()        // calling the sms read function
         return v
     }
 
     private fun receiveMsg() {
-        println("Shamera receiveMsg()")
+        Log.d("Shamera-HomeFragment", "Calling receiveMsg()")
+
         // db connection
         val ref = FirebaseDatabase.getInstance().reference
         var getfilterkey = ""
@@ -55,18 +50,21 @@ class HomeFragment : Fragment() {
         // retrieve data from db
         var getdatafilersms = object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                println("Shamera Main DB Error " + p0.getMessage())
+//                println("Shamera Main DB Error " + p0.getMessage())
+                Log.i("Shamera-HomeFragment", "DB Error "+ p0.message)
             }
 
             override fun onDataChange(p0: DataSnapshot) {
                 for(i in p0.children){
+                    Log.d("Shamera-HomeFragment", "${i.key} receive as $i")
                     if("${i.key}" == "sms_setting") {
-                        println("Shamera Main DB get i " + i)
+//                        println("Shamera Main DB get i " + i)
+                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
                         getfilterkey = i.child("filterKeyword").getValue().toString()
                         getrepsms = i.child("replySMS").getValue().toString()
                     }
-                    if("${i.key}" == "siren_setting") {
-                        println("Shamera Main DB get i " + i)
+                    if("${i.key}" == "sms_setting") {
+                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
                         sirentune = i.child("sirenName").getValue().toString()
                     }
                 }
@@ -80,19 +78,23 @@ class HomeFragment : Fragment() {
             override fun onReceive(p0: Context?, p1: Intent?) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                     for(sms : SmsMessage in Telephony.Sms.Intents.getMessagesFromIntent(p1)){
+                        Log.d("Shamera-HomeFragment", "Received SMS as $sms")
                         if (sms.displayMessageBody.contains(getfilterkey,true)) {
 
-                            println("Shamera: got message content keyword")
+//                            println("Shamera: got message content keyword")
+                            Log.i("Shamera-HomeFragment", "Received SMS $sms and Filter by $getfilterkey")
                             editTextMobile.setText(sms.displayOriginatingAddress)
                             editTextText.setText(sms.displayMessageBody)
 
-                            // read selected siren tune from variable and play when required.
-                            println("Shamera: playing tune $sirentune")
-
+                            // stop meadiaplayer if running
+                            mediaPlayer?.stop()
+                            //create new meadiaPlayer using the tune and read selected siren tune from variable and play when required
                             mediaPlayer = MediaPlayer.create(context, resources.getIdentifier(sirentune,"raw", context?.packageName))
                             mediaPlayer?.setLooping(true)
                             mediaPlayer?.start()
-                            println("Shamera: playing")
+//                            println("Shamera: playing")
+                            Log.i("Shamera-HomeFragment", "Playing Tune $sirentune")
+
 
                             if(!btnStop.isClickable){
                                 btnStop.isClickable = true
@@ -100,7 +102,8 @@ class HomeFragment : Fragment() {
                             // to stop the ringtone
                             btnStop.setOnClickListener {
                                 mediaPlayer?.stop() // pause media player instead of stop.
-                                println("Shamera: click pause")
+//                                println("Shamera: click Stop")
+                                Log.i("Shamera-HomeFragment", "Press Stop Button")
 
                                 // auto reply to message
                                 val replyText = getrepsms
@@ -121,7 +124,7 @@ class HomeFragment : Fragment() {
 
     // disply message handling
     private fun toastMsg(msg: String) {
-        Toast.makeText(context,msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
     }
 
 }

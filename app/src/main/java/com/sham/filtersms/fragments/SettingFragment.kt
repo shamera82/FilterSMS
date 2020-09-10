@@ -2,6 +2,7 @@ package com.sham.filtersms.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,21 +18,18 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.sham.filtersms.FilterSMS
 import com.sham.filtersms.R
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 
-class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
+//class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
+class SettingFragment : Fragment() {
 
-    val siran_tune_select = "alarm_warning_siren" // need to get item from "override fun onItemClick()"
+    lateinit var listView : ListView
+    var tuneName = ""
+    var tuneId = 0
+    var tuneArrayIndex = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,21 +37,26 @@ class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        var listView:ListView? = null
-        var arrayAdapter:ArrayAdapter<String>? = null
 
+        var tuneArray = resources.getStringArray(R.array.siren_tunes_list)
         listView = v.ListViewSiran
-        arrayAdapter = ArrayAdapter(v.context, android.R.layout.simple_list_item_multiple_choice,resources.getStringArray(R.array.siren_tunes_list))
-        listView?.adapter = arrayAdapter
-        listView?.choiceMode = ListView.CHOICE_MODE_SINGLE
-        listView?.onItemClickListener = this
+        listView.adapter = ArrayAdapter(v.context, android.R.layout.simple_list_item_multiple_choice, tuneArray)
+        listView.choiceMode = ListView.CHOICE_MODE_SINGLE
+
+        listView.setOnItemClickListener{
+            parentFragment: AdapterView<*>?, view: View?, position: Int, id: Long ->
+            tuneName = parentFragment?.getItemAtPosition(position) as String
+            tuneId = position
+            Toast.makeText(v.context,"Select Tune $tuneName", Toast.LENGTH_SHORT).show()
+            Log.d("Shamera-SettingFragment", "listView.setOnItemClickListener id: $tuneId and name: $tuneName")
+        }
 
         //init db connection
         val ref = FirebaseDatabase.getInstance().reference
 
         var getdatafilersms = object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
-                println("Shamera DB Error " + p0.getMessage())
+                Log.i("Shamera-SettingFragment", "DB Error " + p0.message)
             }
 
             override fun onDataChange(p0: DataSnapshot) {
@@ -61,45 +64,45 @@ class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
                 var repsms = ""
                 var sirentune = ""
                 for(i in p0.children){
+                    Log.d("Shamera-SettingFragment", "${i.key} receive as $i")
                     if("${i.key}" == "sms_setting") {
-                        println("Shamera DB get i " + i)
+                        Log.d("Shamera-SettingFragment", "${i.key} filter as $i")
                         filterkey = i.child("filterKeyword").getValue().toString()
                         repsms = i.child("replySMS").getValue().toString()
                     }
-                    if("${i.key}" == "siren_setting") {
-                        println("Shamera Main DB get i " + i)
+                    if("${i.key}" == "sms_setting") {
+                        Log.d("Shamera-SettingFragment", "${i.key} filter as $i")
                         sirentune = i.child("sirenName").getValue().toString()
                     }
                 }
                 v.editTextFilterKeyword.setText(filterkey)
                 v.editTextFilterReply.setText(repsms)
+
+                tuneArrayIndex = tuneArray.indexOf(sirentune)
+                listView.setItemChecked(tuneArrayIndex, true)
+                Log.d("Shamera-SettingFragment", "onDataChange id: $tuneId and name: $tuneName and db value: $sirentune")
+
             }
         }
         ref.addValueEventListener(getdatafilersms)
         ref.addListenerForSingleValueEvent(getdatafilersms)
 
-        v.btnApply.setOnClickListener ({
+        v.btnApply.setOnClickListener({
             // Write a message to the database
             var filterKeyword = v.editTextFilterKeyword.text.toString().trim()
             var replySMS = v.editTextFilterReply.text.toString().trim()
-//            val database = FirebaseDatabase.getInstance()
-//            val myReffilterKeyword = database.getReference("filterKeyword")
-//            val myRefreplySMS = database.getReference("replySMS")
-//
-////            myRef.setValue("Hello, Shamera!")
-//            myReffilterKeyword.setValue(filterKeyword)
-//            myRefreplySMS.setValue(replySMS)
-            if(filterKeyword.isEmpty()){
+
+            if (filterKeyword.isEmpty()) {
                 editTextFilterKeyword.error = "Cannot be Empty!!! Add the Filter Key Word"
                 return@setOnClickListener
             }
-            if(replySMS.isEmpty()){
+            if (replySMS.isEmpty()) {
                 editTextFilterReply.error = "Cannot be Empty!!! Add the Reply Message"
                 return@setOnClickListener
             }
 
 
-            val myData = FilterSMS(filterKeyword,replySMS,siran_tune_select)
+            val myData = FilterSMS(filterKeyword, replySMS, tuneName)
             ref.child("sms_setting").setValue(myData).addOnCompleteListener {
                 Toast.makeText(context, "Add / Update center db", Toast.LENGTH_SHORT).show()
             }
@@ -107,10 +110,5 @@ class SettingFragment : Fragment(), AdapterView.OnItemClickListener {
 
         })
         return v
-    }
-
-    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        var item:String = p0?.getItemAtPosition(p2) as String
-        Toast.makeText(context, "Select $item", Toast.LENGTH_SHORT).show()
     }
 }

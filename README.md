@@ -21,7 +21,7 @@ very simple db as follows. need enhancements in future as listed in pending task
 
 ### Pending Tasks
 *	currently DB has one record support. Need to modify as primary key based on receiver mobile number to filter
-*	~~currently on setting you can select siren tune, but it's not updating db. Need to enable that facility
+*	~~currently on setting you can select siren tune, but it's not updating db. Need to enable that facility~~
 *	Setting/Siren Tune view list need to update from res/raw based on title names. (currently it just hardcoded list coming from string-array under values/setting.xml
 *	Need to add / remove siren tunes from the ListView
 

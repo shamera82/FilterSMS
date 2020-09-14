@@ -5,7 +5,7 @@ This is simple SMS read application. Only different is it's filter the SMS using
 ### Use Shared Preferences store data locally 
 File containing key-value pairs and provides simple methods to read and write them
 
-![SharedPreferences](https://github.com/shamera82/FilterSMS/blob/master/screenshots/SharedPreferences.PNG?raw=true)
+![SharedPreferences](https://github.com/shamera82/FilterSMS/blob/local_Preferences/screenshots/SharedPreferences.PNG?raw=true)
 
 ### Screen captures
 * Main Screen

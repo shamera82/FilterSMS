@@ -14,7 +14,7 @@ File containing key-value pairs and provides simple methods to read and write th
 
 * Setting Screen
 
-![Setting Screen](https://github.com/shamera82/FilterSMS/blob/master/local_Preferences/setting_screen.png?raw=true)
+![Setting Screen](https://github.com/shamera82/FilterSMS/blob/local_Preferences/screenshots/setting_screen.png?raw=true)
 
 ### Pending Tasks
 *	Setting/Siren Tune view list need to update from res/raw based on title names. (currently it just hardcoded list coming from string-array under values/setting.xml

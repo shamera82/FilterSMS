@@ -16,10 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.sham.filtersms.R
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -41,52 +37,22 @@ class HomeFragment : Fragment() {
     private fun receiveMsg() {
         Log.d("Shamera-HomeFragment", "Calling receiveMsg()")
 
-//        val pref = activity?.getPreferences(Context.MODE_PRIVATE)
-//        var getfilterkey = pref?.getString("FILTER_KEY", "")
-//        var getrepsms = pref?.getString("REPLY_SMS", "")
-//        var sirentune = pref?.getString("TUNE_NAME", "")
-//        // db connection
-//        val ref = FirebaseDatabase.getInstance().reference
-//        var getfilterkey = ""
-//        var getrepsms = ""
-//        var sirentune = ""
-//
-//        // retrieve data from db
-//        var getdatafilersms = object : ValueEventListener {
-//            override fun onCancelled(p0: DatabaseError) {
-////                println("Shamera Main DB Error " + p0.getMessage())
-//                Log.i("Shamera-HomeFragment", "DB Error "+ p0.message)
-//            }
-//
-//            override fun onDataChange(p0: DataSnapshot) {
-//                for(i in p0.children){
-//                    Log.d("Shamera-HomeFragment", "${i.key} receive as $i")
-//                    if("${i.key}" == "sms_setting") {
-////                        println("Shamera Main DB get i " + i)
-//                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
-//                        getfilterkey = i.child("filterKeyword").getValue().toString()
-//                        getrepsms = i.child("replySMS").getValue().toString()
-//                    }
-//                    if("${i.key}" == "sms_setting") {
-//                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
-//                        sirentune = i.child("sirenName").getValue().toString()
-//                    }
-//                }
-//            }
-//        }
-//        ref.addValueEventListener(getdatafilersms)
-//        ref.addListenerForSingleValueEvent(getdatafilersms)
-
         // sms read and reply
         var br = object: BroadcastReceiver(){
             override fun onReceive(p0: Context?, p1: Intent?) {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                     for(sms : SmsMessage in Telephony.Sms.Intents.getMessagesFromIntent(p1)){
                         Log.d("Shamera-HomeFragment", "Received SMS as $sms")
+
+                        // read from SharedPreferences
                         val pref = activity?.getPreferences(Context.MODE_PRIVATE)
                         var getfilterkey = pref?.getString("FILTER_KEY", "")
                         var getrepsms = pref?.getString("REPLY_SMS", "")
                         var sirentune = pref?.getString("TUNE_NAME", "")
+                        Log.d(
+                            "Shamera-HomeFragment",
+                            "getfilterkey: $getfilterkey and getrepsms: $getrepsms and sirentune: $sirentune")
+
                         if (sms.displayMessageBody.contains(getfilterkey.toString(),true)) {
 
 //                            println("Shamera: got message content keyword")
@@ -130,7 +96,7 @@ class HomeFragment : Fragment() {
         requireActivity().registerReceiver(br, IntentFilter("android.provider.Telephony.SMS_RECEIVED"))
     }
 
-    // disply message handling
+    // display message handling
     private fun toastMsg(msg: String) {
         Toast.makeText(context,msg, Toast.LENGTH_LONG).show()
     }

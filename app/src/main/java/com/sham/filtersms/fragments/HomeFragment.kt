@@ -41,37 +41,41 @@ class HomeFragment : Fragment() {
     private fun receiveMsg() {
         Log.d("Shamera-HomeFragment", "Calling receiveMsg()")
 
-        // db connection
-        val ref = FirebaseDatabase.getInstance().reference
-        var getfilterkey = ""
-        var getrepsms = ""
-        var sirentune = ""
-
-        // retrieve data from db
-        var getdatafilersms = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-//                println("Shamera Main DB Error " + p0.getMessage())
-                Log.i("Shamera-HomeFragment", "DB Error "+ p0.message)
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                for(i in p0.children){
-                    Log.d("Shamera-HomeFragment", "${i.key} receive as $i")
-                    if("${i.key}" == "sms_setting") {
-//                        println("Shamera Main DB get i " + i)
-                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
-                        getfilterkey = i.child("filterKeyword").getValue().toString()
-                        getrepsms = i.child("replySMS").getValue().toString()
-                    }
-                    if("${i.key}" == "sms_setting") {
-                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
-                        sirentune = i.child("sirenName").getValue().toString()
-                    }
-                }
-            }
-        }
-        ref.addValueEventListener(getdatafilersms)
-        ref.addListenerForSingleValueEvent(getdatafilersms)
+//        val pref = activity?.getPreferences(Context.MODE_PRIVATE)
+//        var getfilterkey = pref?.getString("FILTER_KEY", "")
+//        var getrepsms = pref?.getString("REPLY_SMS", "")
+//        var sirentune = pref?.getString("TUNE_NAME", "")
+//        // db connection
+//        val ref = FirebaseDatabase.getInstance().reference
+//        var getfilterkey = ""
+//        var getrepsms = ""
+//        var sirentune = ""
+//
+//        // retrieve data from db
+//        var getdatafilersms = object : ValueEventListener {
+//            override fun onCancelled(p0: DatabaseError) {
+////                println("Shamera Main DB Error " + p0.getMessage())
+//                Log.i("Shamera-HomeFragment", "DB Error "+ p0.message)
+//            }
+//
+//            override fun onDataChange(p0: DataSnapshot) {
+//                for(i in p0.children){
+//                    Log.d("Shamera-HomeFragment", "${i.key} receive as $i")
+//                    if("${i.key}" == "sms_setting") {
+////                        println("Shamera Main DB get i " + i)
+//                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
+//                        getfilterkey = i.child("filterKeyword").getValue().toString()
+//                        getrepsms = i.child("replySMS").getValue().toString()
+//                    }
+//                    if("${i.key}" == "sms_setting") {
+//                        Log.d("Shamera-HomeFragment", "${i.key} filter as $i")
+//                        sirentune = i.child("sirenName").getValue().toString()
+//                    }
+//                }
+//            }
+//        }
+//        ref.addValueEventListener(getdatafilersms)
+//        ref.addListenerForSingleValueEvent(getdatafilersms)
 
         // sms read and reply
         var br = object: BroadcastReceiver(){
@@ -79,7 +83,11 @@ class HomeFragment : Fragment() {
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                     for(sms : SmsMessage in Telephony.Sms.Intents.getMessagesFromIntent(p1)){
                         Log.d("Shamera-HomeFragment", "Received SMS as $sms")
-                        if (sms.displayMessageBody.contains(getfilterkey,true)) {
+                        val pref = activity?.getPreferences(Context.MODE_PRIVATE)
+                        var getfilterkey = pref?.getString("FILTER_KEY", "")
+                        var getrepsms = pref?.getString("REPLY_SMS", "")
+                        var sirentune = pref?.getString("TUNE_NAME", "")
+                        if (sms.displayMessageBody.contains(getfilterkey.toString(),true)) {
 
 //                            println("Shamera: got message content keyword")
                             Log.i("Shamera-HomeFragment", "Received SMS $sms and Filter by $getfilterkey")

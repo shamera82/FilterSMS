@@ -1,8 +1,11 @@
 package com.sham.filtersms.fragments
 
-import android.os.Build
+import android.R.raw
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +13,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.sham.filtersms.FilterSMS
-import com.sham.filtersms.R
+import com.sham.filtersms.R as ResData
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
@@ -35,80 +37,167 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var v = inflater.inflate(R.layout.fragment_settings, container, false)
+        var v = inflater.inflate(ResData.layout.fragment_settings, container, false)
+
+////        var mytuneArry = arrayOf(
+////            ResData.raw.alarm_warning_siren,
+////            ResData.raw.bell_ring_fast,
+////            ResData.raw.emergency_alarm,
+////            ResData.raw.meltdown_alarm,
+////            ResData.raw.siren_air_raid,
+////            ResData.raw.siren_alarm_wobble,
+////            ResData.raw.siren_high_pitched
+////        )
+////
+////        for(r in mytuneArry){
+////            var ff = resources.getResourceName(r)
+////            println("mp3 file $r and name $ff")
+////        }
+//
+//
+//        var tuneArray = resources.getStringArray(ResData.array.siren_tunes_list)
+//        listView = v.ListViewSiran
+//        listView.adapter = ArrayAdapter(
+//            v.context,
+//            android.R.layout.simple_list_item_multiple_choice,
+//            tuneArray
+//        )
+//        listView.choiceMode = ListView.CHOICE_MODE_SINGLE
+//
+//        listView.setOnItemClickListener{ parentFragment: AdapterView<*>?, view: View?, position: Int, id: Long ->
+//            tuneName = parentFragment?.getItemAtPosition(position) as String
+//            tuneId = position
+//            Toast.makeText(v.context, "Select Tune $tuneName", Toast.LENGTH_SHORT).show()
+//            Log.d(
+//                "Shamera-SettingFragment",
+//                "listView.setOnItemClickListener id: $tuneId and name: $tuneName"
+//            )
+//        }
+//
+//        //init db connection
+//        val ref = FirebaseDatabase.getInstance().reference
+//
+//        var getdatafilersms = object : ValueEventListener{
+//            override fun onCancelled(p0: DatabaseError) {
+//                Log.i("Shamera-SettingFragment", "DB Error " + p0.message)
+//            }
+//
+//            override fun onDataChange(p0: DataSnapshot) {
+//                var filterkey = ""
+//                var repsms = ""
+//                var sirentune = ""
+//                for(i in p0.children){
+//                    Log.d("Shamera-SettingFragment", "${i.key} receive as $i")
+//                    if("${i.key}" == "sms_setting") {
+//                        Log.d("Shamera-SettingFragment", "${i.key} filter as $i")
+//                        filterkey = i.child("filterKeyword").getValue().toString()
+//                        repsms = i.child("replySMS").getValue().toString()
+//                    }
+//                    if("${i.key}" == "sms_setting") {
+//                        Log.d("Shamera-SettingFragment", "${i.key} filter as $i")
+//                        sirentune = i.child("sirenName").getValue().toString()
+//                    }
+//                }
+//                v.editTextFilterKeyword.setText(filterkey)
+//                v.editTextFilterReply.setText(repsms)
+//
+//                tuneArrayIndex = tuneArray.indexOf(sirentune)
+//                listView.setItemChecked(tuneArrayIndex, true)
+//                Log.d(
+//                    "Shamera-SettingFragment",
+//                    "onDataChange id: $tuneId and name: $tuneName and db value: $sirentune"
+//                )
+//
+//            }
+//        }
+//        ref.addValueEventListener(getdatafilersms)
+//        ref.addListenerForSingleValueEvent(getdatafilersms)
+//
+//        v.btnApply.setOnClickListener({
+//            // Write a message to the database
+//            var filterKeyword = v.editTextFilterKeyword.text.toString().trim()
+//            var replySMS = v.editTextFilterReply.text.toString().trim()
+//
+//            if (filterKeyword.isEmpty()) {
+//                editTextFilterKeyword.error = "Cannot be Empty!!! Add the Filter Key Word"
+//                return@setOnClickListener
+//            }
+//            if (replySMS.isEmpty()) {
+//                editTextFilterReply.error = "Cannot be Empty!!! Add the Reply Message"
+//                return@setOnClickListener
+//            }
+//
+//
+//            val myData = FilterSMS(filterKeyword, replySMS, tuneName)
+//            ref.child("sms_setting").setValue(myData).addOnCompleteListener {
+//                Toast.makeText(context, "Add / Update center db", Toast.LENGTH_SHORT).show()
+//            }
+//
+//
+//        })
 
 
-        var tuneArray = resources.getStringArray(R.array.siren_tunes_list)
+        val pref = activity?.getPreferences(Context.MODE_PRIVATE)
+        var filterKeyword = pref?.getString("FILTER_KEY", "")
+        var replySMS = pref?.getString("REPLY_SMS", "")
+        var sirentune = pref?.getString("TUNE_NAME", "")
+        v.editTextFilterKeyword.setText(filterKeyword)
+        v.editTextFilterReply.setText(replySMS)
+
+        var tuneArray = resources.getStringArray(ResData.array.siren_tunes_list)
         listView = v.ListViewSiran
-        listView.adapter = ArrayAdapter(v.context, android.R.layout.simple_list_item_multiple_choice, tuneArray)
+        listView.adapter = ArrayAdapter(
+            v.context,
+            android.R.layout.simple_list_item_multiple_choice,
+            tuneArray
+        )
         listView.choiceMode = ListView.CHOICE_MODE_SINGLE
 
-        listView.setOnItemClickListener{
-            parentFragment: AdapterView<*>?, view: View?, position: Int, id: Long ->
+
+        tuneArrayIndex = tuneArray.indexOf(sirentune)
+        listView.setItemChecked(tuneArrayIndex, true)
+        Log.d(
+            "Shamera-SettingFragment",
+            "onDataChange id: $tuneId and name: $tuneName and db value: $sirentune"
+        )
+        listView.setOnItemClickListener{ parentFragment: AdapterView<*>?, view: View?, position: Int, id: Long ->
             tuneName = parentFragment?.getItemAtPosition(position) as String
             tuneId = position
-            Toast.makeText(v.context,"Select Tune $tuneName", Toast.LENGTH_SHORT).show()
-            Log.d("Shamera-SettingFragment", "listView.setOnItemClickListener id: $tuneId and name: $tuneName")
+            Toast.makeText(v.context, "Select Tune $tuneName", Toast.LENGTH_SHORT).show()
+            Log.d(
+                "Shamera-SettingFragment",
+                "listView.setOnItemClickListener id: $tuneId and name: $tuneName"
+            )
         }
 
-        //init db connection
-        val ref = FirebaseDatabase.getInstance().reference
+        v.btnApply.setOnClickListener {
+            filterKeyword = v.editTextFilterKeyword.text.toString().trim()
+            replySMS = v.editTextFilterReply.text.toString().trim()
 
-        var getdatafilersms = object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {
-                Log.i("Shamera-SettingFragment", "DB Error " + p0.message)
-            }
-
-            override fun onDataChange(p0: DataSnapshot) {
-                var filterkey = ""
-                var repsms = ""
-                var sirentune = ""
-                for(i in p0.children){
-                    Log.d("Shamera-SettingFragment", "${i.key} receive as $i")
-                    if("${i.key}" == "sms_setting") {
-                        Log.d("Shamera-SettingFragment", "${i.key} filter as $i")
-                        filterkey = i.child("filterKeyword").getValue().toString()
-                        repsms = i.child("replySMS").getValue().toString()
-                    }
-                    if("${i.key}" == "sms_setting") {
-                        Log.d("Shamera-SettingFragment", "${i.key} filter as $i")
-                        sirentune = i.child("sirenName").getValue().toString()
-                    }
-                }
-                v.editTextFilterKeyword.setText(filterkey)
-                v.editTextFilterReply.setText(repsms)
-
-                tuneArrayIndex = tuneArray.indexOf(sirentune)
-                listView.setItemChecked(tuneArrayIndex, true)
-                Log.d("Shamera-SettingFragment", "onDataChange id: $tuneId and name: $tuneName and db value: $sirentune")
-
-            }
-        }
-        ref.addValueEventListener(getdatafilersms)
-        ref.addListenerForSingleValueEvent(getdatafilersms)
-
-        v.btnApply.setOnClickListener({
-            // Write a message to the database
-            var filterKeyword = v.editTextFilterKeyword.text.toString().trim()
-            var replySMS = v.editTextFilterReply.text.toString().trim()
-
-            if (filterKeyword.isEmpty()) {
+            if (filterKeyword!!.isEmpty()) {
                 editTextFilterKeyword.error = "Cannot be Empty!!! Add the Filter Key Word"
                 return@setOnClickListener
             }
-            if (replySMS.isEmpty()) {
+            if (replySMS!!.isEmpty()) {
                 editTextFilterReply.error = "Cannot be Empty!!! Add the Reply Message"
                 return@setOnClickListener
             }
+            val pref = activity?.getPreferences(Context.MODE_PRIVATE)
+            val editor = pref?.edit()
 
+            editor?.putString("FILTER_KEY", filterKeyword)
+            editor?.putString("REPLY_SMS", replySMS)
+            editor?.putString("TUNE_NAME", tuneName)
 
-            val myData = FilterSMS(filterKeyword, replySMS, tuneName)
-            ref.child("sms_setting").setValue(myData).addOnCompleteListener {
-                Toast.makeText(context, "Add / Update center db", Toast.LENGTH_SHORT).show()
-            }
+            editor?.commit()
+            Log.d(
+                "Shamera-SettingFragment",
+                "btnApply.setOnClickListener FILTER_KEY: $filterKeyword, REPLY_SMS: $replySMS and TUNE_NAME: $tuneName"
+            )
 
+            Toast.makeText(v.context, "Filter Key set as : $filterKeyword, Reply Msg set as $replySMS and Tune set as $tuneName", Toast.LENGTH_LONG).show()
 
-        })
+        }
         return v
     }
 }
